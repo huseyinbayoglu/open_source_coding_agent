@@ -146,6 +146,9 @@ python -m pip install aider-install && aider-install
 
 ## Sorun Giderme
 
+- **`ImportError: libcudart.so.13`:** vLLM'in PyPI varsayılan wheel'i CUDA 13, Colab'da CUDA 12 var.
+  `serve.py` artık `uv pip install vllm --torch-backend=auto` ile kurar (otomatik düzelir). Mevcut bozuk
+  kurulumu temizlemek için: `pip uninstall -y vllm && pip install -U uv && uv pip install --system vllm --torch-backend=auto`.
 - **vLLM çöküyor / OOM:** Model VRAM'e sığmıyor → daha küçük model seç ya da `MAX_LEN=8192` ver.
 - **`test_endpoint.py` tool-calling göstermiyor:** `serve.py`'de `--enable-auto-tool-choice` var mı,
   `TOOL_PARSER` modele uygun mu? (Qwen3-Coder→`qwen3_coder`, Qwen2.5-Coder→`hermes`). vLLM'i güncelle.

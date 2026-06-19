@@ -39,9 +39,13 @@ def ensure_deps():
     """vLLM ve cloudflared kurulu degilse kur."""
     try:
         import vllm  # noqa: F401
-        print("vLLM zaten kurulu.")
-    except ImportError:
-        sh("pip install -q -U vllm")
+        print(f"vLLM zaten kurulu: {vllm.__version__}")
+    except Exception:
+        # PyPI'daki varsayilan vLLM wheel'i artik CUDA 13 ile geliyor; Colab'da CUDA 12 var.
+        # uv + --torch-backend=auto ortamdaki CUDA'yi tespit edip uyumlu wheel'i kurar
+        # (vLLM'in resmi onerdigi yontem). Boylece "libcudart.so.13" hatasi olmaz.
+        sh("pip install -q -U uv")
+        sh("uv pip install --system -q vllm --torch-backend=auto")
     if shutil.which("cloudflared") is None:
         sh("wget -q https://github.com/cloudflare/cloudflared/releases/latest/"
            "download/cloudflared-linux-amd64.deb -O /tmp/cloudflared.deb")
