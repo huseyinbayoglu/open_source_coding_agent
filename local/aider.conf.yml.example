@@ -1,0 +1,24 @@
+# Aider yapılandırma örneği.
+# Çalıştığın projenin köküne ".aider.conf.yml" adıyla kopyala (başında nokta!).
+# Tüm seçenekler: https://aider.chat/docs/config/aider_conf.html
+#
+# Model + endpoint connect.sh'deki ortam değişkenlerinden gelir
+# (OPENAI_API_BASE, OPENAI_API_KEY), o yüzden burada model'i tekrar yazmaya gerek yok.
+
+# Rol/kurallar dosyasını her sohbette context'e ekle:
+read:
+  - CONVENTIONS.md
+
+# Kod yazınca testleri otomatik çalıştır; kırmızıysa düzeltmeye çalışsın:
+auto-test: true
+test-cmd: "pytest -q"
+
+# Lint (istersen aç):
+# auto-lint: true
+# lint-cmd: "ruff check ."
+
+# Repo haritası için daha fazla token = daha çok dosyayı görür:
+map-tokens: 2048
+
+# Otomatik commit kapalı: değişiklikleri sen inceleyip onayla:
+auto-commits: false

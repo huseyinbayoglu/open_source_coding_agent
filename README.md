@@ -133,14 +133,27 @@ cp openhands/microagents-template/knowledge/testing.md /path/to/projen/.openhand
 
 ---
 
-## (Opsiyonel) Aider ile hızlı deneme
+## Aider (düşük bant genişliği / hafif alternatif)
 
-OpenHands kurmadan endpoint'i 2 dakikada görmek istersen Aider yeterli (tool seti sınırlıdır, asıl ajan OpenHands):
+OpenHands ~2–4 GB Docker imajı indirir. İnternetin kısıtlıysa **Aider** çok daha hafiftir (~150–300 MB, Docker yok)
+ve coding-agent işini görür: keşfet, düzenle, **yeni dosya oluştur**, test çalıştır, git.
 
 ```bash
 python -m pip install aider-install && aider-install
 ./local/connect.sh https://xxxx.trycloudflare.com /path/to/projen
 ```
+
+### Aider'ı kişiselleştir (rol + otomatik test)
+OpenHands kadar olmasa da Aider epey ayarlanabilir. Şablonları projenin köküne kopyala:
+```bash
+cp local/CONVENTIONS.md       /path/to/projen/CONVENTIONS.md       # rol/kurallar (repo.md karşılığı)
+cp local/aider.conf.yml.example /path/to/projen/.aider.conf.yml    # auto-test, read, map ayarları
+```
+- `CONVENTIONS.md` → her sohbette yüklenen kalıcı rol/stil. İçindeki "Bu proje hakkında"yı doldur.
+- `.aider.conf.yml` → `auto-test`/`test-cmd` ile testi otomatik çalıştırıp düzeltir, `read` ile conventions'ı ekler.
+
+**OpenHands'e göre eksiği:** tetiklenen çoklu skill sistemi (`knowledge/*.md` + triggers) ve tam otonom ajan döngüsü
+yok. Rol, stil, otomatik test, dosya/komut çalıştırma ise Aider'da da var.
 
 ---
 
