@@ -41,11 +41,12 @@ def ensure_deps():
         import vllm  # noqa: F401
         print(f"vLLM zaten kurulu: {vllm.__version__}")
     except Exception:
-        # PyPI'daki varsayilan vLLM wheel'i artik CUDA 13 ile geliyor; Colab'da CUDA 12 var.
-        # uv + --torch-backend=auto ortamdaki CUDA'yi tespit edip uyumlu wheel'i kurar
-        # (vLLM'in resmi onerdigi yontem). Boylece "libcudart.so.13" hatasi olmaz.
+        # uv + --torch-backend=auto: ortamdaki CUDA surumunu tespit edip uyumlu wheel'i kurar.
+        # --reinstall SART: Colab'in hazir gelen torch'unu (farkli CUDA) da yeniden kurup
+        # vLLM ile ayni CUDA'ya esitler. Yoksa "ImportError: libcudart.so.XX" alirsin
+        # (vLLM cu13 ister ama torch cu12 kalir gibi).
         sh("pip install -q -U uv")
-        sh("uv pip install --system -q vllm --torch-backend=auto")
+        sh("uv pip install --system --reinstall -q vllm --torch-backend=auto")
     if shutil.which("cloudflared") is None:
         sh("wget -q https://github.com/cloudflare/cloudflared/releases/latest/"
            "download/cloudflared-linux-amd64.deb -O /tmp/cloudflared.deb")
